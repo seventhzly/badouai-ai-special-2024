@@ -1,0 +1,34 @@
+import cv2
+import numpy as np
+
+def bilinear(image,shape):
+    src_h,src_w,channel=image.shape
+    dst_h=shape[1]
+    dst_w=shape[0]
+    print("src_w,src_h=",src_w,src_h)
+    print("dst_w,dst_h=",dst_w,dst_h)
+    if src_h==dst_h and src_w==dst_w:
+        return image.copy()
+    scale_x=float(src_w)/dst_w
+    scale_y=float(src_h)/dst_h
+    emptyImage=np.zeros((dst_h,dst_w,channel),np.uint8)
+    for k in range(channel):
+        for dst_y in range(dst_h):
+            for dst_x in range(dst_w):
+                x=(dst_x+0.5)*scale_x-0.5
+                y=(dst_y+0.5)*scale_y-0.5
+                x0=int(np.floor(x))
+                x1=min(x0+1,src_w-1)
+                y0=int(np.floor(y))
+                y1=min(y0+1,src_h-1)
+                temp0=(x-x0)*image[y0,x1,k] + (x1-x)*image[y0,x0,k]
+                temp1=(x-x0)*image[y1,x1,k] + (x1-x)*image[y1,x0,k]
+                emptyImage[dst_y,dst_x,k]=int((y1-y)*temp0 + (y-y0)*temp1)
+    return emptyImage
+
+if __name__ == '__main__':
+    img=cv2.imread("lenna.png")
+    picture=bilinear(img,(700,700))
+    cv2.imshow("origin picture",img)
+    cv2.imshow("after picture",picture)
+    cv2.waitKey(0)

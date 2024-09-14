@@ -1,0 +1,15 @@
+---
+title: "proof"
+output: html_document
+date: "2024-09-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+\begin{array}{cc}
+假设原图坐标是(x_{m} ,y_{m}),目标图坐标是(x_{M},y_{M}),为了使几何中心相同\\
+则有(\frac{m-1}{2} +z)\times \frac{M}{m} =\frac{M-1}{2} +z\\
+解得z= \frac{1}{2} 
+
+\end{array}
